@@ -1,0 +1,54 @@
+<div class="p-4 max-w-xl mx-auto">
+  <h2 class="text-2xl font-semibold mb-4">Contactez-nous</h2>
+
+  <form (ngSubmit)="onSubmit()" [formGroup]="contactForm">
+    <!-- Email -->
+    <div class="mb-4">
+      <label class="block mb-1" for="email">Email</label>
+      <input
+        [class.p-invalid]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched"
+        class="w-full"
+        formControlName="email"
+        id="email"
+        pInputText
+        type="email"
+      />
+
+      @if (contactForm.get('email')?.errors?.['required'] && contactForm.get('email')?.touched) {
+        <small class="p-error">L'email est requis.</small>
+      } @else if (contactForm.get('email')?.errors?.['email'] && contactForm.get('email')?.touched) {
+        <small class="p-error">Email invalide.</small>
+      }
+    </div>
+
+    <!-- Message -->
+    <div class="mb-4">
+      <label class="block mb-1" for="message">Message</label>
+      <textarea
+        [class.p-invalid]="contactForm.get('message')?.invalid && contactForm.get('message')?.touched"
+        class="w-full"
+        formControlName="message"
+        id="message"
+        pInputTextarea
+        rows="5"
+      ></textarea>
+
+      @if (contactForm.get('message')?.errors?.['required'] && contactForm.get('message')?.touched) {
+        <small class="p-error">Le message est requis.</small>
+      } @else if (contactForm.get('message')?.errors?.['maxlength'] && contactForm.get('message')?.touched) {
+        <small class="p-error">Le message doit contenir au maximum 300 caractères.</small>
+      }
+    </div>
+
+    <!-- Submit Button -->
+    <p-button [disabled]="contactForm.invalid" label="Envoyer" severity="primary" type="submit"></p-button>
+  </form>
+
+  <!-- Success Message -->
+  @if (messageSent) {
+    <p-messages
+      [value]="[{severity:'success', summary:'Succès', detail:'Demande de contact envoyée avec succès'}]"
+      class="mt-4"
+    ></p-messages>
+  }
+</div>

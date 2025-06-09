@@ -1,0 +1,79 @@
+@if (authService.isLoggedIn()) {
+  <p-toolbar [style]="{ height: '100px'}">
+    <div class="p-toolbar-group-start">
+      <img src="assets/icons/icon-72x72.png" alt="logo"/>
+    </div>
+    <div class="p-toolbar-group-center">
+      {{ title }}
+    </div>
+    <div class="p-toolbar-group-end" (click)="cartOverlay.toggle($event)">
+      <i class="pi pi-shopping-cart" style="font-size: 2rem"></i>
+      @if (cartService.getItems().length > 0) {
+        <span
+          pBadge
+          [value]="cartService.getItems().length"
+          class="absolute -top-2 -right-2"
+          style="background-color: red; color: white;"
+        ></span>
+      }
+    </div>
+  </p-toolbar>
+
+  <p-splitter [panelSizes]="[20, 80]" [style]="{ height: 'calc(100vh - 100px)' }">
+    <ng-template pTemplate>
+      <div class="w-full">
+        <app-panel-menu/>
+      </div>
+    </ng-template>
+    <ng-template pTemplate>
+      <div class="w-full app-content">
+        <router-outlet></router-outlet>
+      </div>
+    </ng-template>
+  </p-splitter>
+
+  <p-overlayPanel #cartOverlay>
+    <div class="w-80">
+      <h3 class="text-md font-semibold mb-3">Your Cart</h3>
+
+      @for (product of selectedProducts; track product.id) {
+        <p-card class="mb-3">
+          <div class="flex justify-between items-start">
+            <div class="w-full">
+              <div class="font-semibold text-base">{{ product.name }}</div>
+              <div class="text-sm text-gray-600">${{ product.price }}</div>
+
+              <div class="flex items-center gap-2 mt-3">
+                <p-button
+                  icon="pi pi-minus"
+                  severity="secondary"
+                  size="small"
+                  (onClick)="decreaseQty(product)"
+                ></p-button>
+
+                <span class="min-w-[2ch] text-center font-semibold">{{ product.quantity }}</span>
+
+                <p-button
+                  icon="pi pi-plus"
+                  severity="secondary"
+                  size="small"
+                  (onClick)="increaseQty(product)"
+                ></p-button>
+              </div>
+            </div>
+
+            <p-button
+              icon="pi pi-times"
+              severity="danger"
+              size="small"
+              (onClick)="removeItem(product)"
+              class="ml-2 mt-1"
+            ></p-button>
+          </div>
+        </p-card>
+      }
+    </div>
+  </p-overlayPanel>
+} @else {
+  <router-outlet></router-outlet>
+}

@@ -1,0 +1,29 @@
+<div [style]="{ height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }">
+  <p-card [style]="{ height: '300px',width: '600px'}">
+    <p-tabView [(activeIndex)]="activeIndex">
+      <p-tabPanel header="Login">
+        <form #loginForm="ngForm" (ngSubmit)="login()">
+          <div class="p-fluid">
+            <input [(ngModel)]="loginData.email" name="email" pInputText placeholder="Email" required type="text"/>
+            <p-password [(ngModel)]="loginData.password" name="password" placeholder="Password" required/>
+            <button [disabled]="loginForm.invalid" label="Login" pButton type="submit"></button>
+          </div>
+        </form>
+      </p-tabPanel>
+      <p-tabPanel header="Register">
+        <form #registerForm="ngForm" (ngSubmit)="register()">
+          <div class="p-fluid">
+            <input [(ngModel)]="registerData.username" name="username" pInputText placeholder="Username" required
+                   type="text"/>
+            <input [(ngModel)]="registerData.firstname" name="firstname" pInputText placeholder="Firstname" required
+                   type="text"/>
+            <input [(ngModel)]="registerData.email" name="email" pInputText placeholder="Email" required type="text"/>
+            <p-password [(ngModel)]="registerData.password" name="password" placeholder="Password" required/>
+            <button [disabled]="registerForm.invalid" label="Register" pButton type="submit"></button>
+          </div>
+        </form>
+      </p-tabPanel>
+    </p-tabView>
+  </p-card>
+</div>
+
